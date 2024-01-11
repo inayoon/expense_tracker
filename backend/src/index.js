@@ -10,6 +10,18 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("Connected to Mongoose");
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+
+app.use("/users", require("./routes/users"));
+//app.use("/users", require("./routes/users"));
+
 app.listen(port, () => {
   console.log(`listening on ${port}`);
 });
