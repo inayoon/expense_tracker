@@ -19,7 +19,7 @@ mongoose
     console.error(error);
   });
 
-app.use("/users", require("./routes/users"));
+// app.use("/users", require("./routes/users"));
 //app.use("/users", require("./routes/users"));
 
 app.listen(port, () => {
