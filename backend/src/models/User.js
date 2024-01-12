@@ -17,6 +17,7 @@ const userSchema = mongoose.Schema({
   },
 });
 
+//By using "pre" method, Before the user is created, this function is called
 userSchema.pre("save", async function (next) {
   let user = this;
   if (user.isModified("password")) {

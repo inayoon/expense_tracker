@@ -1,8 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { loginUser } from "../store/thunkFunctions";
 
 export default function Login() {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -10,7 +13,12 @@ export default function Login() {
     reset,
   } = useForm({ mode: "Onchange" });
 
-  const onSubmit = ({ email, password, username }) => {
+  const onSubmit = ({ email, password }) => {
+    const body = {
+      email,
+      password,
+    };
+    dispatch(loginUser(body));
     reset();
   };
 

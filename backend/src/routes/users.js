@@ -13,4 +13,26 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
+router.post("/login", async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(400).send("Auth failed, Email is not found");
+    }
+    const isMatch = await user.comparePassword(req.body.password);
+    if (!isMatch) {
+      return res.status(400).send("Wrong Credentials");
+    }
+    const payload = {
+      userId: user._id.toHexString(),
+    };
+    const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "3h",
+    });
+    return res.json({ user, accessToken });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
