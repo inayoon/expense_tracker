@@ -11,13 +11,23 @@ import LandingPage from "./pages/LandingPage";
 function App() {
   const isAuth = useSelector((state) => state.user?.isAuth);
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route element={<NotAuthRoutes isAuth={isAuth} />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Route>
-    </Routes>
+    <div>
+      {/* ToastContainer 추가 */}
+      <ToastContainer
+        position="bottom-right"
+        theme="light"
+        pauseOnHover
+        autoClose={1500}
+      />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+
+        <Route element={<NotAuthRoutes isAuth={isAuth} />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+      </Routes>
+    </div>
   );
 }
 

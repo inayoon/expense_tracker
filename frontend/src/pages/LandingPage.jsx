@@ -10,7 +10,7 @@ export default function LandingPage() {
           className="mx-auto"
         />
         <Link to="/login">
-          <button className="bg-blue-500 text-white px-6 py-3 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md">
+          <button className="bg-blue text-white px-6 py-3 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md hover:scale-105">
             Start Tracking💰
           </button>
         </Link>
