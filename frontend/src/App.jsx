@@ -8,23 +8,6 @@ import NotAuthRoutes from "./components/NotAuthRoutes";
 import { useSelector } from "react-redux";
 import LandingPage from "./pages/LandingPage";
 
-// function Layout() {
-//   return (
-//     <div className="flex flex-col h-screen justify-between">
-//       <ToastContainer
-//         position="bottom-right"
-//         theme="light"
-//         pauseOnHover
-//         autoClose={1500}
-//       />
-
-//       <main className="mb-auto w-10/12 max-w-4xl mx-auto">
-//         <Outlet />
-//       </main>
-//     </div>
-//   );
-// }
-
 function App() {
   const isAuth = useSelector((state) => state.user?.isAuth);
   return (
