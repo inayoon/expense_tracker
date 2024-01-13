@@ -1,6 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 export default function LandingPage() {
+  const isAuth = useSelector((state) => state.user?.isAuth);
   return (
     <div className="flex justify-center items-center h-screen">
       <div className=" max-w-3xl relative">
@@ -9,7 +11,7 @@ export default function LandingPage() {
           alt="main_pic"
           className="mx-auto"
         />
-        <Link to="/login">
+        <Link to={isAuth ? "/home" : "/login"}>
           <button className="bg-blue text-white font-semibold  px-6 py-3 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md hover:scale-105">
             Start Tracking💰
           </button>

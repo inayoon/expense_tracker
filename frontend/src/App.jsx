@@ -1,17 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotAuthRoutes from "./components/NotAuthRoutes";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LandingPage from "./pages/LandingPage";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Home from "./pages/Home";
+import { authUser } from "./store/thunkFunctions";
 
 function App() {
+  const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.user?.isAuth);
+  const { pathname } = useLocation;
+  useEffect(() => {
+    if (isAuth) {
+      dispatch(authUser());
+    }
+  }, [isAuth, pathname, dispatch]);
+
   return (
     <div>
       {/* ToastContainer 추가 */}

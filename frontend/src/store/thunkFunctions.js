@@ -26,3 +26,16 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+
+export const authUser = createAsyncThunk(
+  "user/authUser",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axiosInstance.get("/user/auth");
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue(error.response.data || error.message);
+    }
+  }
+);
