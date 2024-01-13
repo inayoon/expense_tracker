@@ -7,8 +7,8 @@ const auth = require("../middleware/auth.js");
 router.get("/auth", auth, async (req, res, next) => {
   return res.json({
     _id: req.user._id,
-    email: req.body.email,
-    username: req.body.username,
+    email: req.user.email,
+    username: req.user.username,
   });
 });
 
