@@ -7,6 +7,8 @@ import Register from "./pages/Register";
 import NotAuthRoutes from "./components/NotAuthRoutes";
 import { useSelector } from "react-redux";
 import LandingPage from "./pages/LandingPage";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import Home from "./pages/Home";
 
 function App() {
   const isAuth = useSelector((state) => state.user?.isAuth);
@@ -22,6 +24,9 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
 
+        <Route element={<ProtectedRoutes isAuth={isAuth} />}>
+          <Route path="/home" element={<Home />} />
+        </Route>
         <Route element={<NotAuthRoutes isAuth={isAuth} />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

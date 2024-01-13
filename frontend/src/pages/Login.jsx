@@ -1,11 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../store/thunkFunctions";
 
 export default function Login() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -18,7 +19,7 @@ export default function Login() {
       email,
       password,
     };
-    dispatch(loginUser(body));
+    dispatch(loginUser(body)).then(() => navigate("/home"));
     reset();
   };
 
