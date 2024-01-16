@@ -5,7 +5,7 @@ export default function Header({ filters, filter, onFilterChange }) {
     <div className="">
       <ul className="flex gap-5 mt-6">
         {filters.map((value) => (
-          <li key={value}>
+          <li key={value} className="ml-3">
             <button
               className={filter === value ? "font-semibold" : "font-light"}
               onClick={() => onFilterChange(value)}
@@ -15,7 +15,7 @@ export default function Header({ filters, filter, onFilterChange }) {
           </li>
         ))}
       </ul>
-      <div className="w-[90%] my-[1%] border-[1px] border-lightGray/30"></div>
+      <div className="w-[90%] my-[1%] border-[1px] border-lightGray/30 ml-3"></div>
     </div>
   );
 }

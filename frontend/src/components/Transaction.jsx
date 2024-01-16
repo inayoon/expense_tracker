@@ -10,7 +10,7 @@ export default function Transaction({ filter }) {
   return (
     <div>
       <div
-        className="flex flex-col justify-center bg-slate-100 shadow-md rounded-md max-w-[300px] h-[90px] mx-auto mt-2 cursor-pointer"
+        className="flex flex-col justify-center bg-slate-100 shadow-md rounded-md max-w-[280px] h-[90px] mt-4 mx-auto cursor-pointer"
         onClick={handleModal}
       >
         <div className="self-center text-4xl ">
