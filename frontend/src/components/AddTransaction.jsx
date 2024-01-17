@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axiosInstance from "../utils/axios";
 import moment from "moment";
 import { IoCalendarNumber } from "react-icons/io5";
 import Calendar from "react-calendar";
@@ -7,14 +8,14 @@ import "../index.css";
 
 export default function AddTransaction({ onModalChange }) {
   const [value, onChange] = useState(new Date());
-  const [showCal, setShowCal] = useState(true);
+  const [showCal, setShowCal] = useState(false);
   const [history, setHistory] = useState({
     date: "",
     category: "",
     description: "",
     amount: "",
   });
-  console.log(history);
+
   const handleCal = () => {
     setShowCal(!showCal);
   };
@@ -38,10 +39,9 @@ export default function AddTransaction({ onModalChange }) {
       ...prev,
       date: formattedDate,
     }));
+    setShowCal(false);
   };
-  useEffect(() => {
-    handleCal();
-  }, [value]);
+
   return (
     <section>
       <div className="mt-6 ml-3">
@@ -52,11 +52,12 @@ export default function AddTransaction({ onModalChange }) {
         <label className="font-semibold mt-2 ml-3 ">Date</label>
         <div className="flex items-center">
           <input
-            className="bg-slate-100 w-[85%] h-10 shadow-md rounded-md my-3 ml-3 px-2"
-            defaultValue={moment(value).format("YYYY-MMM-DD")}
+            className="bg-slate-100 w-[85%] h-10 shadow-md rounded-md my-3 ml-3 px-3"
+            placeholder="Click the calendar"
+            value={history.date || ""}
           />
           <div
-            className="relative right-8 text-xl font-bold"
+            className="relative right-8 text-xl font-bold cursor-pointer"
             onClick={handleCal}
           >
             <IoCalendarNumber />
@@ -75,14 +76,22 @@ export default function AddTransaction({ onModalChange }) {
         <label className="font-semibold mt-2 ml-3 ">Description</label>
         <div className="flex justify-center gap-4">
           <button
-            className="bg-slate-100 w-1/2 h-10 shadow-md rounded-md my-3 font-light ml-3 cursor-pointer"
+            className={`${
+              history.category === "Income"
+                ? "bg-yellow font-semibold"
+                : "bg-slate-100"
+            } w-1/2 h-10 shadow-md rounded-md my-3 font-light ml-3 cursor-pointer`}
             onClick={() => handleCategory("Income")}
           >
             Income
           </button>
 
           <button
-            className="bg-slate-100 w-1/2 h-10 shadow-md rounded-md my-3 font-light mr-12 cursor-pointer"
+            className={`${
+              history.category === "Expense"
+                ? "bg-yellow font-semibold"
+                : "bg-slate-100"
+            } w-1/2 h-10 shadow-md rounded-md my-3 font-light mr-12 cursor-pointer`}
             onClick={() => handleCategory("Expense")}
           >
             Expense
@@ -105,7 +114,10 @@ export default function AddTransaction({ onModalChange }) {
           value={history.amount}
           onChange={handleChange}
         />
-        <button className="bg-yellow text-white w-[85%] h-12 shadow-md rounded-md my-3 ml-3 px-3 mt-2">
+        <button
+          className="bg-yellow font-semibold w-[85%] h-12 shadow-md rounded-md my-3 ml-3 px-3 mt-2 hover:text-white"
+          type="submit"
+        >
           Add the History
         </button>
         <button className="pr-5" onClick={onModalChange}>
