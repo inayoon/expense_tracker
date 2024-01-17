@@ -20,7 +20,7 @@ mongoose
   });
 
 app.use("/user", require("./routes/users"));
-//app.use("/users", require("./routes/users"));
+app.use("/transactions", require("./routes/transactions"));
 
 app.listen(port, () => {
   console.log(`listening on ${port}`);

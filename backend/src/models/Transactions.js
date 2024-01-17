@@ -1,21 +1,17 @@
 const mongoose = require("mongoose");
 
-const expenseSchema = new mongoose.Schema({
+const transactionSchema = new mongoose.Schema({
   category: {
     type: String,
-    required: true,
   },
   amount: {
     type: Number,
-    required: true,
   },
   description: {
     type: String,
-    required: true,
   },
   date: {
     type: Date,
-    required: true,
   },
 
   user: {
@@ -25,6 +21,6 @@ const expenseSchema = new mongoose.Schema({
   },
 });
 
-const Expense = mongoose.model("Expense", expenseSchema);
+const Transaction = mongoose.model("Transaction", transactionSchema);
 
-module.exports = Expense;
+module.exports = Transaction;

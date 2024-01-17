@@ -5,6 +5,7 @@ import { IoCalendarNumber } from "react-icons/io5";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../index.css";
+import { useSelector } from "react-redux";
 
 export default function AddTransaction({ onModalChange }) {
   const [value, onChange] = useState(new Date());
@@ -15,12 +16,22 @@ export default function AddTransaction({ onModalChange }) {
     description: "",
     amount: "",
   });
+  const userData = useSelector((state) => state.user?.userData);
 
   const handleCal = () => {
     setShowCal(!showCal);
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const body = {
+      user: userData._id,
+      ...history,
+    };
+    try {
+      await axiosInstance.post("/transactions", body);
+    } catch (error) {
+      console.error(error);
+    }
   };
   const handleCategory = (type) => {
     setHistory({ ...history, category: type });
