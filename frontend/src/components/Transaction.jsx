@@ -20,7 +20,7 @@ export default function Transaction({ filter }) {
           Add your transaction
         </div>
       </div>
-      {showForm && <AddTransaction />}
+      {showForm && <AddTransaction onModalChange={handleModal} />}
     </div>
   );
 }

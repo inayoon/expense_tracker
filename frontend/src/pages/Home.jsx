@@ -8,7 +8,7 @@ export default function Home() {
   const [filter, setFilter] = useState(filters[0]);
   const name = useSelector((state) => state.user?.userData.username);
   return (
-    <section className="flex flex-col justify-center mt-20 max-w-md mx-auto">
+    <section className="flex flex-col justify-center mt-6 max-w-md mx-auto">
       <div className="p-6 bg-white rounded-md shadow-lg">
         <div className="flex flex-col max-w-[160px] mx-auto">
           <img src="../../public/wallet.png" alt="wallet" />

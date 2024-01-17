@@ -5,4 +5,10 @@
 *{
   font-family: Pretendard;
   }
- 
+
+  .react-calendar__tile:enabled:hover,
+  .react-calendar__tile:enabled:focus,
+  .react-calendar__tile--active {
+    background: #FFB703;
+    border-radius : 22px 22px;
+  }
