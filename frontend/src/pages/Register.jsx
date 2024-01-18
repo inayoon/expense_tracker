@@ -1,11 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../store/thunkFunctions";
 
 export default function Register() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -19,7 +20,9 @@ export default function Register() {
       password,
       username,
     };
-    dispatch(registerUser(body));
+    dispatch(registerUser(body)).then(() => {
+      navigate("/login");
+    });
     reset();
   };
 
@@ -60,9 +63,9 @@ export default function Register() {
               {...register("username", userName)}
             />
 
-            {errors?.name && (
+            {errors?.username && (
               <div>
-                <span className="text-gray-400">{errors.name.message}</span>
+                <span className="text-gray-400">{errors.username.message}</span>
               </div>
             )}
           </div>

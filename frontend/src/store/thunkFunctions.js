@@ -19,6 +19,7 @@ export const loginUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const response = await axiosInstance.post("/user/login", userData);
+
       return response.data;
     } catch (error) {
       console.error(error);

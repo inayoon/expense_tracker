@@ -21,21 +21,34 @@ export default function AddTransaction({ onModalChange }) {
   const handleCal = () => {
     setShowCal(!showCal);
   };
+  const handleCategory = (type) => {
+    setHistory((prev) => ({
+      ...prev,
+      category: type,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const body = {
-      user: userData._id,
-      ...history,
-    };
-    try {
-      await axiosInstance.post("/transactions", body);
-    } catch (error) {
-      console.error(error);
+    if (history.category) {
+      const body = {
+        user: userData._id,
+        ...history,
+      };
+      try {
+        await axiosInstance.post("/transactions", body);
+        setHistory({
+          date: "",
+          category: "",
+          description: "",
+          amount: "",
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
-  const handleCategory = (type) => {
-    setHistory({ ...history, category: type });
-  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setHistory((prev) => ({
@@ -43,6 +56,7 @@ export default function AddTransaction({ onModalChange }) {
       [name]: value,
     }));
   };
+
   const handleDateChange = (date) => {
     onChange(date);
     const formattedDate = moment(date).format("YYYY-MMM-DD");
@@ -92,7 +106,10 @@ export default function AddTransaction({ onModalChange }) {
                 ? "bg-yellow font-semibold"
                 : "bg-slate-100"
             } w-1/2 h-10 shadow-md rounded-md my-3 font-light ml-3 cursor-pointer`}
-            onClick={() => handleCategory("Income")}
+            onClick={(e) => {
+              e.preventDefault();
+              handleCategory("Income");
+            }}
           >
             Income
           </button>
@@ -103,7 +120,10 @@ export default function AddTransaction({ onModalChange }) {
                 ? "bg-yellow font-semibold"
                 : "bg-slate-100"
             } w-1/2 h-10 shadow-md rounded-md my-3 font-light mr-12 cursor-pointer`}
-            onClick={() => handleCategory("Expense")}
+            onClick={(e) => {
+              e.preventDefault();
+              handleCategory("Expense");
+            }}
           >
             Expense
           </button>

@@ -15,6 +15,12 @@ const userSchema = mongoose.Schema({
     type: String,
     minLength: 6,
   },
+  transactions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Transaction",
+    },
+  ],
 });
 
 //By using "pre" method, Before the user is created, this function is called
