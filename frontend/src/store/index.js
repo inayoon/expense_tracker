@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./userSlice";
+import expenseReducer from "./expenseSlice";
 import storage from "redux-persist/lib/storage";
 import {
   FLUSH,
@@ -14,6 +15,7 @@ import {
 
 export const rootReducer = combineReducers({
   user: userReducer,
+  expense: expenseReducer,
 });
 
 const persistConfig = {

@@ -40,3 +40,16 @@ export const authUser = createAsyncThunk(
     }
   }
 );
+
+export const addHistory = createAsyncThunk(
+  "transaction/addHistory",
+  async (body, thunkAPI) => {
+    try {
+      const response = await axiosInstance.post("/transactions/add", body);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue(error.response.data || error.message);
+    }
+  }
+);

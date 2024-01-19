@@ -2,15 +2,28 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth.js");
 const Transaction = require("../models/Transactions.js");
+const User = require("../models/User.js");
 
-router.post("/", auth, async (req, res, next) => {
+router.post("/add", auth, async (req, res, next) => {
   try {
-    const transaction = new Transaction(req.body);
-    transaction.save();
-    const user = await User.findById(req.user._id);
-    user.transactions.push(transaction._id);
-    await user.save();
-    return res.sendStatus(201);
+    const { date, category, description, amount } = req.body;
+    const user = req.user._id;
+    const transaction = new Transaction({
+      user,
+      date,
+      category,
+      description,
+      amount,
+    });
+
+    await transaction.save();
+    return res.status(201).json({
+      date: transaction.date,
+      category: transaction.category,
+      description: transaction.description,
+      amount: transaction.amount,
+      // Any other necessary information...
+    });
   } catch (error) {
     next(error);
   }

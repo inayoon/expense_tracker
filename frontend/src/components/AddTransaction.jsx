@@ -5,9 +5,11 @@ import { IoCalendarNumber } from "react-icons/io5";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../index.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addHistory } from "../store/thunkFunctions";
 
 export default function AddTransaction({ onModalChange }) {
+  const dispatch = useDispatch();
   const [value, onChange] = useState(new Date());
   const [showCal, setShowCal] = useState(false);
   const [history, setHistory] = useState({
@@ -35,17 +37,13 @@ export default function AddTransaction({ onModalChange }) {
         user: userData._id,
         ...history,
       };
-      try {
-        await axiosInstance.post("/transactions", body);
-        setHistory({
-          date: "",
-          category: "",
-          description: "",
-          amount: "",
-        });
-      } catch (error) {
-        console.error(error);
-      }
+      dispatch(addHistory(body));
+      setHistory({
+        date: "",
+        category: "",
+        description: "",
+        amount: "",
+      });
     }
   };
 
