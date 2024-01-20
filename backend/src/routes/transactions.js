@@ -22,7 +22,6 @@ router.post("/add", auth, async (req, res, next) => {
       category: transaction.category,
       description: transaction.description,
       amount: transaction.amount,
-      // Any other necessary information...
     });
   } catch (error) {
     next(error);
