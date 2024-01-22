@@ -3,7 +3,7 @@ import { addHistory } from "./thunkFunctions";
 import { toast } from "react-toastify";
 
 const initialState = {
-  expenses: {},
+  expenses: [],
   isLoading: false,
   error: "",
 };
@@ -14,22 +14,26 @@ const expenseSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(addHistory.fulfilled, (state, action) => {
-        const { date, category, description, amount } = action.payload;
-
-        if (!state.expenses[date]) {
-          state.expenses[date] = [];
-        }
-
-        state.expenses[date].push({ category, description, amount });
-      })
       .addCase(addHistory.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
+      .addCase(addHistory.fulfilled, (state, action) => {
+        const { date, category, amount, description } = action.payload;
+        const newExpense = {
+          date,
+          category,
+          amount,
+          description,
+        };
+
+        state.expenses.push(newExpense); // Add the new transaction to the array
+        state.isLoading = false;
+      })
+
       .addCase(addHistory.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
-        toast.error(action.payload);
+        state.error = action.error.message;
       });
   },
 });

@@ -24,9 +24,14 @@ router.post("/add", auth, async (req, res, next) => {
     user.transactions.push(transaction._id);
 
     // Save the updated user model
-    await user.save();
+    await User.findByIdAndUpdate(
+      userId,
+      { $push: { transactions: transaction._id } },
+      { new: true }
+    );
 
     return res.status(201).json({
+      user: transaction.user,
       date: transaction.date,
       category: transaction.category,
       description: transaction.description,

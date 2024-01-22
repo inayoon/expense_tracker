@@ -15,7 +15,7 @@ import {
 
 export const rootReducer = combineReducers({
   user: userReducer,
-  expense: expenseReducer,
+  expenses: expenseReducer,
 });
 
 const persistConfig = {
