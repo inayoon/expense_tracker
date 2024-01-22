@@ -5,10 +5,9 @@ import Transaction from "../components/Transaction";
 import AddTransaction from "../components/AddTransaction";
 
 export default function Home() {
-  const filters = ["all", "income", "expenses"];
+  const filters = ["all", "Income", "Expense"];
   const [filter, setFilter] = useState(filters[0]);
   const [showForm, setShowForm] = useState(false);
-  const [totalIncome, setTotalIncome] = useState(0);
   const name = useSelector((state) => state.user?.userData.username);
   const history = useSelector((state) => state.expenses?.expenses);
   console.log(history);
@@ -54,7 +53,7 @@ export default function Home() {
           <div className="flex flex-col items-center mt-1">
             Income
             <div className="text-emerald-600 font-semibold hover:scale-110">
-              {getTotal("Income")}
+              +{getTotal("Income")}
             </div>
           </div>
           <div className="w-[1px] h-[80%] mx-[1%] border-[1px] border-lightGray/30 mt-2" />
@@ -62,7 +61,7 @@ export default function Home() {
           <div className="flex flex-col items-center mt-1">
             Expenses
             <div className="text-red-600 font-semibold hover:scale-110">
-              {getTotal("Expense")}
+              -{getTotal("Expense")}
             </div>
           </div>
         </div>

@@ -6,16 +6,29 @@ import moment from "moment";
 
 export default function Transaction({ filter, onModalChange }) {
   const expenseData = useSelector((state) => state.expenses?.expenses);
-  // console.log(expenseData);
+  console.log(expenseData);
+
   const handleAmount = (price, category) => {
-    category === "Income" ? (price = `+$${price}`) : (price = `-$${price}`);
-    return price;
+    const formattedPrice = parseFloat(price).toFixed(2);
+    const formattedAmount =
+      category === "Income" ? `+$${formattedPrice}` : `-$${formattedPrice}`;
+    return formattedAmount;
   };
+  const filtered = getfilteredItems(filter);
+  function getfilteredItems(filter) {
+    if (filter === "all") return expenseData;
+    else if (filter === "Income") {
+      return expenseData.filter((data) => data.category === "Income");
+    } else if (filter === "Expense") {
+      return expenseData.filter((data) => data.category === "Expense");
+    }
+  }
+  console.log(filtered);
   return (
     <div>
       <div className="flex flex-col">
         <ul className="">
-          {expenseData.map((data) => (
+          {filtered.map((data) => (
             <div
               className="bg-slate-50 w-[85%] h-14 shadow-md rounded-md my-3 mx-5 px-4"
               key={data.date}

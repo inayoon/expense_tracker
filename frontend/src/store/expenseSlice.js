@@ -27,7 +27,7 @@ const expenseSlice = createSlice({
           description,
         };
 
-        state.expenses.push(newExpense); // Add the new transaction to the array
+        state.expenses = [...state.expenses, newExpense]; // Add the new transaction to the array
         state.isLoading = false;
       })
 
