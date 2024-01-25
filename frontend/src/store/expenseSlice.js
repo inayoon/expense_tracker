@@ -19,8 +19,9 @@ const expenseSlice = createSlice({
         state.error = null;
       })
       .addCase(addHistory.fulfilled, (state, action) => {
-        const { date, category, amount, description } = action.payload;
+        const { _id, date, category, amount, description } = action.payload;
         const newExpense = {
+          _id,
           date,
           category,
           amount,

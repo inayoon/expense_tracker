@@ -31,6 +31,7 @@ router.post("/add", auth, async (req, res, next) => {
     );
 
     return res.status(201).json({
+      _id: transaction._id,
       user: transaction.user,
       date: transaction.date,
       category: transaction.category,

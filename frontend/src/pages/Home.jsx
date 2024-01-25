@@ -10,7 +10,6 @@ export default function Home() {
   const [showForm, setShowForm] = useState(false);
   const name = useSelector((state) => state.user?.userData.username);
   const history = useSelector((state) => state.expenses?.expenses);
-  console.log(history);
   const handleModal = () => {
     setShowForm(!showForm);
   };
