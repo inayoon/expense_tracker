@@ -43,4 +43,29 @@ router.post("/add", auth, async (req, res, next) => {
   }
 });
 
+router.delete("/delete/:id", async (req, res, next) => {
+  const idToDelete = req.params.id;
+
+  try {
+    // MongoDB에서 해당 ID를 기반으로 문서 삭제
+    const deletedTransaction = await Transaction.findByIdAndDelete(idToDelete);
+    // 삭제된 문서가 없는 경우 에러 응답
+    if (!deletedTransaction) {
+      return res.status(404).json({ message: "Error: Data not found." });
+    }
+
+    // 성공 응답
+    res
+      .status(200)
+      .json({
+        deletedId: deletedTransaction._id,
+        message: "Success: Data deleted successfully.",
+      });
+  } catch (error) {
+    // 에러 응답
+    console.error(error);
+    res.status(500).json({ message: "Error: Internal server error." });
+  }
+});
+
 module.exports = router;

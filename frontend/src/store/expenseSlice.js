@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addHistory } from "./thunkFunctions";
+import { addHistory, deleteHistory } from "./thunkFunctions";
 import { toast } from "react-toastify";
 
 const initialState = {
@@ -35,6 +35,23 @@ const expenseSlice = createSlice({
       .addCase(addHistory.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+      })
+      .addCase(deleteHistory.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteHistory.fulfilled, (state, action) => {
+        const { deletedId } = action.payload;
+        state.expenses = state.expenses.filter(
+          (expense) => expense._id !== deletedId
+        );
+        state.isLoading = false;
+        toast.success("Transaction deleted successfully.");
+      })
+      .addCase(deleteHistory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+        toast.error(`Error deleting transaction: ${action.error.message}`);
       });
   },
 });

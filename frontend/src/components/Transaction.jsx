@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { BsPlusCircleDotted } from "react-icons/bs";
 import moment from "moment";
+import { deleteHistory } from "../store/thunkFunctions";
 //import { deleteExpense } from "./yourReduxActions";  // 실제 삭제를 처리하는 액션을 import
 
 export default function Transaction({ filter, onModalChange }) {
   const [hoverStates, setHoverStates] = useState({});
   const [deleteTextVisible, setDeleteTextVisible] = useState(null);
-
   const expenseData = useSelector((state) => state.expenses?.expenses);
   const dispatch = useDispatch();
 
@@ -19,8 +19,7 @@ export default function Transaction({ filter, onModalChange }) {
   };
 
   const handleDelete = (id) => {
-    // 삭제 액션을 dispatch하는 부분
-    //dispatch(deleteExpense(id));
+    dispatch(deleteHistory(id));
   };
 
   const filtered = getfilteredItems(filter);
@@ -46,7 +45,7 @@ export default function Transaction({ filter, onModalChange }) {
           {filtered.map((data) => (
             <div className="flex relative" key={data._id}>
               <div
-                className={`bg-slate-50 w-[85%] h-14 shadow-md rounded-md my-3 mr-0 ml-5 px-4 transition ease-in-out ${
+                className={`bg-slate-50 w-[85%] h-14 shadow-md rounded-md mt-3 ml-5 mr-0 px-4 transition ease-in-out ${
                   hoverStates[data._id]
                     ? "hover:-translate-x-5 cursor-pointer"
                     : ""
@@ -54,6 +53,7 @@ export default function Transaction({ filter, onModalChange }) {
                 key={data.date}
                 onMouseEnter={() => handleHistoryMouse(data._id, true)}
                 onMouseLeave={() => handleHistoryMouse(data._id, false)}
+                onClick={() => handleDelete(data._id)}
               >
                 <div className="text-sm text-gray-600 pt-1">
                   {moment(data.date).format("YYYY-MMM-DD")}
@@ -75,11 +75,8 @@ export default function Transaction({ filter, onModalChange }) {
               </div>
               {/* 빈 자리에 빨간색 박스로 "Delete" 표시 */}
               {hoverStates[data._id] && (
-                <div className="absolute top-3 right-0 w-14 h-14 ml-0 bg-red-500 flex items-center justify-center">
-                  <div
-                    className="text-white cursor-pointer"
-                    onClick={() => handleDelete(data.date)}
-                  >
+                <div className="absolute top-3 right-4 w-12 h-14 bg-red-500 flex items-center justify-center">
+                  <div className="text-white text-sm cursor-pointer">
                     Delete
                   </div>
                 </div>

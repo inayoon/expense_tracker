@@ -53,3 +53,16 @@ export const addHistory = createAsyncThunk(
     }
   }
 );
+
+export const deleteHistory = createAsyncThunk(
+  "transaction/deleteHistory",
+  async (id, thunkAPI) => {
+    try {
+      const response = await axiosInstance.delete(`/transactions/delete/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue(error.response.data || error.message);
+    }
+  }
+);
