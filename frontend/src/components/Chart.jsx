@@ -37,18 +37,19 @@ export default function Chart() {
   const monthlyExpenses = calculateMonthlyExpenses();
 
   return (
-    <div>
-      <div className="flex bg-slate-50 w-[85%] h-52 shadow-md rounded-md mt-3 ml-5 mr-0 px-4">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={monthlyExpenses}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="amount" fill="#8884d8" />
-          </BarChart>
-        </ResponsiveContainer>
+    <div className=" bg-slate-50 w-[85%] h-52 shadow-md rounded-md mt-3 ml-5 mr-0">
+      <div className="font-semibold text-gray-700 text-sm">
+        Monthly Expense Chart
       </div>
+      <ResponsiveContainer width="90%" height="90%">
+        <BarChart data={monthlyExpenses}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="month" />
+          <YAxis />
+          <Tooltip />
+          <Bar dataKey="amount" fill="#FFB703" />
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   );
 }
