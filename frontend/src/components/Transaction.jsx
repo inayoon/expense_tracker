@@ -73,7 +73,6 @@ export default function Transaction({ filter, onModalChange }) {
                   </div>
                 </div>
               </div>
-              {/* 빈 자리에 빨간색 박스로 "Delete" 표시 */}
               {hoverStates[data._id] && (
                 <div className="absolute top-3 right-4 w-12 h-14 bg-red-500 flex items-center justify-center">
                   <div className="text-white text-sm cursor-pointer">
