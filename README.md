@@ -42,7 +42,120 @@
 
 ---
 
-> ### 1. Sign-Up & Sign-In (With react-hook-form)
+> ### 1. Fetching Data from API endpoint with axios call using redux-thunk 
+
+![thunk](https://github.com/inayoon/expense_tracker/assets/100747899/e39e71fa-3297-4275-b133-6be4be487ce3)
+<details>
+<summary><h3>Applying redux-thunk for asynchronous operation </h3></summary>
+<br/>
+
+- Utilized a thunk function to communicate asynchronously with the MongoDB database and update the slice accordingly. <br/>
+- Configured reducer logic for asynchronous actions within the extraReducers of the slice.<br/>
+
+```Javascript
+/** thunkFunctions.js */
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import axiosInstance from "../utils/axios";
+
+
+export const addHistory = createAsyncThunk(
+  "transaction/addHistory",
+  async (body, thunkAPI) => {
+    try {
+      const response = await axiosInstance.post("/transactions/add", body);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue(error.response.data || error.message);
+    }
+  }
+);
+
+export const deleteHistory = createAsyncThunk(
+  "transaction/deleteHistory",
+  async (id, thunkAPI) => {
+    try {
+      const response = await axiosInstance.delete(`/transactions/delete/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue(error.response.data || error.message);
+    }
+  }
+);
+
+```
+
+```Javascript
+/** expenseSlice.js */
+import { createSlice } from "@reduxjs/toolkit";
+import { addHistory, deleteHistory } from "./thunkFunctions";
+import { toast } from "react-toastify";
+
+const initialState = {
+  expenses: [],
+  isLoading: false,
+  error: "",
+};
+
+const expenseSlice = createSlice({
+  name: "expenses",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(addHistory.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(addHistory.fulfilled, (state, action) => {
+        const { _id, date, category, amount, description } = action.payload;
+        const newExpense = {
+          _id,
+          date,
+          category,
+          amount,
+          description,
+        };
+
+        state.expenses = [...state.expenses, newExpense];
+        state.isLoading = false;
+      })
+
+      .addCase(addHistory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(deleteHistory.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteHistory.fulfilled, (state, action) => {
+        const { deletedId } = action.payload;
+        state.expenses = state.expenses.filter(
+          (expense) => expense._id !== deletedId
+        );
+        state.isLoading = false;
+        toast.success("Transaction deleted successfully.");
+      })
+      .addCase(deleteHistory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+        toast.error(`Error deleting transaction: ${action.error.message}`);
+      });
+  },
+});
+
+export default expenseSlice.reducer;
+
+```
+</details>
+
+---
+
+<br/>
+
+> ### 2. Sign-Up & Sign-In (With react-hook-form)
 |                                                             **Sign-Up**                                                                |                                                         **Sign-In**                                                             |
 | :--------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------: |
 |  <img width="400" hight="300" alt="tracker_signup" src="https://github.com/inayoon/christmas_card_app/assets/100747899/a40e3d86-3d23-4dce-ba63-694400365ef2">  |  <img width="400" hight="300"  alt="tracker_signin" src="https://github.com/inayoon/christmas_card_app/assets/100747899/5051d493-c4fa-4d02-ad12-bf32ff3da51f">  |
@@ -145,8 +258,160 @@ return(
 
 <br/>
 
-> ### 2. Selecting a date with react-calendar 
+> ### 3. Selecting a date with react-calendar 
 
+![cal](https://github.com/inayoon/expense_tracker/assets/100747899/efd1dcfb-caae-4f03-82cf-1ad0952fe4ec)
+<details>
+<summary><h3>Applying react-calendar library </h3></summary>
+<br/>
+
+- Used a calendar icon as a toggle button to display the calendar.<br/>
+- Utilized moment.js to format the date in a specific format.<br/>
+- When a date is selected, it changes the point color to indicate the selection.<br/>
+
+```Javascript
+import moment from "moment";
+import { IoCalendarNumber } from "react-icons/io5";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+
+export default function AddTransaction({ onModalChange }) {
+  const [showCal, setShowCal] = useState(false);
+
+  const handleCal = () => {
+    setShowCal(!showCal);
+  };
+
+  const handleDateChange = (date) => {
+    onChange(date);
+    const formattedDate = moment(date).format("YYYY-MMM-DD");
+    setHistory((prev) => ({
+      ...prev,
+      date: formattedDate,
+    }));
+    setShowCal(false);
+  };
+
+  return (
+    <section>
+      <div className="mt-6 ml-3">
+        New Transaction
+        <div className="w-[90%] my-[1%] border-[1px] border-lightGray/30"></div>
+      </div>
+      <form className="flex flex-col" onSubmit={handleSubmit}>
+        <label className="font-semibold mt-2 ml-3 ">Date</label>
+        <div className="flex items-center">
+          <input
+            className="bg-slate-100 w-[85%] h-10 shadow-md rounded-md my-3 ml-3 px-3"
+            placeholder="Click the calendar"
+            value={history.date || ""}
+          />
+          <div
+            className="relative right-8 text-xl font-bold cursor-pointer"
+            onClick={handleCal}
+          >
+            <IoCalendarNumber />
+          </div>
+        </div>
+        <div className="w-[90%] ml-3">
+          {showCal && (
+            <Calendar
+              onChange={handleDateChange}
+              value={value}
+              locale="en-US"
+              tileClassName="custom-calendar-tile"
+            />
+          )}
+        </div>
+       ...
+    </section>
+  );
+}
+
+```
+</details>
+
+---
+
+<br/>
+
+> ### 4. Displaying monthly expenses with recharts.js 
+
+![charts](https://github.com/inayoon/expense_tracker/assets/100747899/185826fb-d2bf-41ca-b9d5-65fcdb4b0f25)
+<details>
+<summary><h3>Applying rechart library </h3></summary>
+<br/>
+
+- To calculate the total monthly expenses, initially, the filter function is used to isolate Expense entries from both Income and Expense.<br/>
+- For the monthly total, the date is parsed using the split function to extract relevant values.<br/>
+
+```Javascript
+import React from "react";
+import { useSelector } from "react-redux";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+} from "recharts";
+
+export default function Chart() {
+  const expenseData = useSelector((state) => state.expenses?.expenses);
+  const calculateMonthlyExpenses = () => {
+    const monthlyExpenses = {};
+
+    expenseData
+      .filter((expense) => expense.category === "Expense")
+      .forEach((expense) => {
+        const month = expense.date.split("-")[1];
+        if (monthlyExpenses[month]) {
+          monthlyExpenses[month] += expense.amount;
+        } else {
+          monthlyExpenses[month] = expense.amount;
+        }
+      });
+
+    return Object.entries(monthlyExpenses).map(([month, amount]) => ({
+      month,
+      amount,
+    }));
+  };
+
+  const monthlyExpenses = calculateMonthlyExpenses();
+
+  return (
+    <div className=" bg-slate-50 w-[85%] h-52 shadow-md rounded-md mt-3 ml-5 mr-0">
+      <div className="font-semibold text-gray-700 text-sm">
+        Monthly Expense Chart
+      </div>
+      <ResponsiveContainer width="90%" height="90%">
+        <BarChart data={monthlyExpenses}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="month" />
+          <YAxis />
+          <Tooltip />
+          <Bar dataKey="amount" fill="#FFB703" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+```
+</details>
+
+---
+
+<br/>
+
+## Project Goals
+> - Develop asynchronous communication using Redux Thunk functions.
+> - Manage user and expense state globally using Redux Toolkit.
+> - Explore react-calendar and react-chart libraries.
+<br/>
 
 - Implementing expense tracker (1.11~
   ![money expense tracker  money expense tracker](https://github.com/inayoon/expnese_tracker/assets/100747899/a3b06800-c64f-4079-a13e-808472951304)
