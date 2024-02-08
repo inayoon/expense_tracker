@@ -407,11 +407,22 @@ export default function Chart() {
 
 <br/>
 
-## Project Goals
-> - Develop asynchronous communication using Redux Thunk functions.
-> - Manage user and expense state globally using Redux Toolkit.
-> - Explore react-calendar and react-chart libraries.
+## Challenges Faced During the Project Development
+ - Still struggling with breaking down components into smaller pieces to implement functionality, but putting effort into creating a visual draft and constructing components based on that.
+ - Had doubts about the necessity of thunk functions while learning through YouTube, but applying them hands-on and **being able to dispatch functions clarified their purpose.**
 <br/>
 
-- Implementing expense tracker (1.11~
-  ![money expense tracker  money expense tracker](https://github.com/inayoon/expnese_tracker/assets/100747899/a3b06800-c64f-4079-a13e-808472951304)
+## Visual Draft Before Working on the Project
+<img width="450" alt="tracker_draft" src="https://github.com/inayoon/expnese_tracker/assets/100747899/a3b06800-c64f-4079-a13e-808472951304">
+
+---
+
+<br/>
+
+> ### Used Fonts
+  - [Pretendard](https://github.com/orioncactus/pretendard)
+
+<br/>
+
+> ### Used Image
+  - (https://www.freepik.com/icon/wallet_584026#fromView=keyword&term=Wallet&page=1&position=2&uuid=2bb1b8c6-dd7a-4392-b563-74600574f741)
